@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -14,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -32,6 +35,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+val topics = listOf(
+    "Arts & Crafts", "Beauty", "Books", "Business", "Comics", "Culinary",
+    "Design", "Fashion", "Film", "History", "Maths", "Music", "People", "Philosophy",
+    "Religion", "Social sciences", "Technology", "TV", "Writing"
+)
 
 @Composable
 fun StaggeredGrid(
@@ -108,27 +117,20 @@ fun ChipPreview() {
     }
 }
 
-val topics = listOf(
-    "Arts & Crafts", "Beauty", "Books", "Business", "Comics", "Culinary",
-    "Design", "Fashion", "Film", "History", "Maths", "Music", "People", "Philosophy",
-    "Religion", "Social sciences", "Technology", "TV", "Writing"
-)
-
-
 @Composable
 fun BodyContent(modifier: Modifier = Modifier) {
-    StaggeredGrid(modifier = modifier) {
-        for (topic in topics) {
-            Chip(modifier = Modifier.padding(8.dp), text = topic)
+    Row(
+        modifier = modifier
+            .background(color = Color.LightGray, shape = RectangleShape)
+            .padding(16.dp)
+            .size(200.dp)
+            .horizontalScroll(rememberScrollState())
+    ) {
+        StaggeredGrid {
+            for (topic in topics) {
+                Chip(modifier = Modifier.padding(8.dp), text = topic)
+            }
         }
-    }
-}
-
-@Preview
-@Composable
-fun LayoutsCodelabPreview() {
-    MyApplicationTheme() {
-        BodyContent()
     }
 }
 
@@ -149,5 +151,13 @@ fun LayoutsCodelab() {
         }
     ) { innerPadding ->
         BodyContent(Modifier.padding(innerPadding))
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LayoutsCodelabPreview() {
+    MyApplicationTheme() {
+        LayoutsCodelab()
     }
 }
